@@ -1,0 +1,3 @@
+[submodule "TENET"]
+	path = TENET
+	url = https://github.com/neocaleb/TENET.git
