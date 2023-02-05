@@ -86,7 +86,7 @@ def inferNetwork(
     expr = expr.drop(columns=["trajectory", "cellSelect"])
 
     ## Sequential Code
-    if workers <= 1:
+    if isinstance(workers, int) and workers <= 1:
         if not isJVMStarted():
             startJVM(
                 getDefaultJVMPath(),
