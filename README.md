@@ -14,9 +14,9 @@ Also take a look at the original [TENET Paper](https://doi.org/10.1093/nar/gkaa1
 ## Dependencies
 - Python >= 3.10
 - [JPype](https://github.com/jpype-project/jpype) >= 1.4.0
-- pandas >= 1.4
-- numpy >= 1.23
-- tqdm >= 4.0
+- numpy
+- pandas
+- tqdm 
 
 ## Installation
 This module is not on pypi.

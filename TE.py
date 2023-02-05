@@ -59,8 +59,9 @@ def inferNetwork(
         x1: np.ndarray,
         x2: np.ndarray,
         histLen: int,
+        kern: JClass
     ):
-        teCalc = TE_KERN()
+        teCalc = kern()
         teCalc.setProperty("NORMALISE", "true")
         teCalc.initialise(histLen, 0.5)
         teCalc.setObservations(JArray(JDouble, 1)(x1), JArray(JDouble, 1)(x2))
@@ -94,9 +95,10 @@ def inferNetwork(
                 "-Djava.class.path=" + kernel,
                 "-Xmx16G",
             )
-            TE_KERN = JPackage(
-                "infodynamics.measures.continuous.kernel"
-            ).TransferEntropyCalculatorKernel
+
+        kern = JPackage(
+            "infodynamics.measures.continuous.kernel"
+        ).TransferEntropyCalculatorKernel
         result = pd.DataFrame(index=genes, columns=genes)
 
         for i in range(len(genes)):
@@ -105,7 +107,7 @@ def inferNetwork(
         for comb in tqdm(combinations(range(len(genes)), 2)):
             x1 = expr.iloc[:, comb[0]].to_list()
             x2 = expr.iloc[:, comb[1]].to_list()
-            r1, r2 = runTE(x1, x2, histLen), runTE(x2, x1, histLen)
+            r1, r2 = runTE(x1, x2, histLen, kern), runTE(x2, x1, histLen, kern)
             result.iloc[comb[0], comb[1]] = r1
             result.iloc[comb[1], comb[0]] = r2
 
