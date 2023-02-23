@@ -16,6 +16,10 @@ def calcTE(
     histLen: int = 1,
     kernel: str|os.PathLike = locateJar(),
 ):
+    """
+    Calculates the transfer entropy value over the given range on the expression matrix.
+    This function is for internal use, and not imported on the top level.
+    """
     startJVM(getDefaultJVMPath(), "-ea", "-Djava.class.path=" + kernel, "-Xmx16G")
     kern = JPackage(
         "infodynamics.measures.continuous.kernel"
@@ -50,9 +54,16 @@ def inferNetwork(
 ) -> pd.DataFrame:
     """
     Infer the network from the expression data and the trajectory.
-    @params expr: expression data, a pandas.DataFrame. Genes on Columns, Cells on Rows.
-    @params trajectory: the trajectory, a Series of cell pseudotime.
-    @params mask: the mask of cells to be used, a Series of bool.
+    @params `expr` expression data, a pandas.DataFrame. Genes on Columns, Cells on Rows.
+    @params `genes` the subset of genes to use in the analysis.
+    @params `trajectory` the trajectory, a Series of cell pseudotime.
+    @params `mask` the mask of cells to be used, a Series of bool.
+    @params `histLen` the history length to use in the TE calculation step.
+    @params `workers` the number of workers to use, or tuple of two integers for block height and width.
+    @params `kernel` the java archive containing the transfer entropy calcuation kernel.
+
+    NOLAN will use the original TENET's `information.jar` as the default kernel in the TENET submodule.
+    The original TENET paper recommends the history length of 1 for the best results.
     """
 
     def runTE(

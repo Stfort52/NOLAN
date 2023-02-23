@@ -8,9 +8,9 @@ def parseGenes(
 ) -> tuple[pd.DataFrame, pd.Series, pd.Series]:
     """
     parse Wishbone flavored single cell expression matrix
-    @params path: the path to the file.
-    @params genesOnRows: if the genes are on the row indices.
-    @params delim: the delimiter of the file.
+    @params path the path to the file.
+    @params genesOnRows if the genes are on the row indices.
+    @params delim the delimiter of the file.
     @return a tuple of (expression, cell label, genes)
     """
     df: pd.DataFrame = pd.read_csv(path, delimiter=delim)
@@ -26,16 +26,32 @@ def parseGenes(
 
 
 def parseCellSelect(path: str | os.PathLike) -> list[int]:
+    """
+    parse in the TENET flavored cell select array.
+    @params `path` path to the cell select file.
+    @return boolean list of cell selection, 1 if selected.
+    """
     with open(path) as f:
         return list(map(int, f))
 
 
 def parseTrajectory(path: str | os.PathLike) -> list[float]:
+    """
+    parse in the TENET flavored cell trajectory.
+    @params `path` path to the trajectory file.
+    @return list of cell trajectories
+    """
     with open(path) as f:
         return list(map(float, f))
 
 
-def writeTEmtx(path: str | os.PathLike, te: pd.DataFrame):
+def writeTEmtx(path: str | os.PathLike, te: pd.DataFrame) -> None:
+    """
+    Writes the TE matrix with the format alike TENET's output.
+    This is a wrapper to the pandas dataframe's `to_csv`.
+    @params `path` the output path.
+    @params `te` the TE matrix to write.
+    """
     with open(path, "w") as f:
         f.write("TE")
         te.to_csv(f, sep="\t")
